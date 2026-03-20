@@ -402,3 +402,283 @@ if (document.readyState === 'loading') {
 } else {
   initBehanceSection();
 }
+
+// ============================
+// JOURNEY MODE
+// ============================
+(function() {
+
+  /* ---- Data per role from HTML data-* attributes ---- */
+  const PHASE_LABELS = {
+    '1': 'Foundation',
+    '2': 'Scale Building',
+    '3': 'Leadership & Ecosystem Impact'
+  };
+
+  /* ---- DOM references built on first use ---- */
+  let overlay, progressBar, exitBtn, counter, scrollHint;
+  let chapters = [];
+  let currentChapter = -1;
+  let scrollObserver = null;
+  let isActive = false;
+
+  /** Build the Journey Mode overlay from existing timeline items */
+  function buildOverlay() {
+    if (document.getElementById('jm-overlay')) return; // already built
+
+    // Collect all timeline items in DOM order
+    const items = Array.from(document.querySelectorAll('.timeline-item'));
+    if (!items.length) return;
+
+    // ── Build overlay shell ──
+    overlay = document.createElement('div');
+    overlay.id = 'jm-overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-label', 'Journey Mode — Guided Career Story');
+
+    // Progress bar
+    progressBar = document.createElement('div');
+    progressBar.id = 'jm-progress-bar';
+
+    // Exit button
+    exitBtn = document.createElement('button');
+    exitBtn.id = 'jm-exit';
+    exitBtn.setAttribute('aria-label', 'Exit Journey Mode');
+    exitBtn.innerHTML = `<span>✕</span><span>Exit Story</span>`;
+
+    // Chapter dot counter
+    counter = document.createElement('div');
+    counter.id = 'jm-counter';
+
+    // Scroll hint
+    scrollHint = document.createElement('div');
+    scrollHint.className = 'jm-scroll-hint';
+    scrollHint.innerHTML = `<div class="jm-scroll-hint-arrow"></div><span class="jm-scroll-hint-label">Scroll</span>`;
+
+    document.body.appendChild(progressBar);
+    document.body.appendChild(exitBtn);
+    document.body.appendChild(counter);
+    document.body.appendChild(scrollHint);
+    document.body.appendChild(overlay);
+
+    // ── Build one chapter per timeline item ──
+    items.forEach((item, idx) => {
+      const card     = item.querySelector('.timeline-card');
+      const company  = card.querySelector('.role-company')?.textContent || '';
+      const role     = card.querySelector('.role-title-text')?.textContent || '';
+      const duration = card.querySelectorAll('.role-meta-item')[0]?.textContent || '';
+      const location = card.querySelectorAll('.role-meta-item')[1]?.textContent || '';
+      const context  = card.querySelector('.journey-context')?.innerHTML || '';
+      const impact   = card.querySelector('.impact-summary')?.innerHTML || '';
+      const bullets  = Array.from(card.querySelectorAll('.achievement-bullet')).map(li => li.textContent);
+      const tags     = Array.from(card.querySelectorAll('.journey-tag')).map(t => t.textContent);
+      const phase    = item.dataset.phase || '2';
+      const milestone = item.dataset.milestone === 'true';
+      const scale    = item.dataset.scale || '';
+      const capability = item.dataset.capability || '';
+      const focus    = item.dataset.focus || '';
+
+      // Chapter element
+      const ch = document.createElement('div');
+      ch.className = 'jm-chapter';
+      ch.dataset.phase = phase;
+      ch.dataset.milestone = milestone ? 'true' : 'false';
+      ch.dataset.scale = scale;
+      ch.dataset.capability = capability;
+      ch.dataset.focus = focus;
+      ch.dataset.idx = idx;
+
+      // Milestone badge HTML
+      const milestoneBadge = milestone
+        ? `<div class="jm-layer jm-milestone-badge">⚡ Peak Scale — Milestone Role</div>`
+        : '';
+
+      // Achievements HTML (max 4 for visual clarity)
+      const achievementHtml = bullets.slice(0, 4)
+        .map(b => `<li class="jm-achievement">${b}</li>`)
+        .join('');
+
+      // Tags HTML (max 6)
+      const tagHtml = tags.slice(0, 6)
+        .map(t => `<span class="jm-tag">${t}</span>`)
+        .join('');
+
+      // Build chapter inner HTML
+      ch.innerHTML = `
+        <div class="jm-content">
+          ${milestoneBadge}
+          <div class="jm-layer jm-company">${company}</div>
+          <div class="jm-layer jm-role">${role}</div>
+          <div class="jm-layer jm-meta">
+            <span>${duration}</span>
+            <span class="jm-meta-sep">·</span>
+            <span>${location}</span>
+          </div>
+          <div class="jm-layer jm-context">${context}</div>
+          <div class="jm-layer jm-impact">${impact}</div>
+          <div class="jm-layer">
+            <ul class="jm-achievements">${achievementHtml}</ul>
+            <div class="jm-tags">${tagHtml}</div>
+          </div>
+        </div>
+        <aside class="jm-insight-panel" aria-hidden="true">
+          <div class="jm-insight-title">Live Signals</div>
+          <div class="jm-signal">
+            <div class="jm-signal-label">Scale</div>
+            <div class="jm-signal-value" id="jm-sig-scale-${idx}">${scale || '—'}</div>
+          </div>
+          <div class="jm-signal">
+            <div class="jm-signal-label">Capability</div>
+            <div class="jm-signal-value" id="jm-sig-cap-${idx}">${capability || '—'}</div>
+          </div>
+          <div class="jm-signal">
+            <div class="jm-signal-label">Focus Areas</div>
+            <div class="jm-signal-value" id="jm-sig-focus-${idx}">${focus || '—'}</div>
+          </div>
+          <div class="jm-phase-pill p${phase}" id="jm-phase-pill-${idx}">
+            ${PHASE_LABELS[phase] || ''}
+          </div>
+        </aside>
+      `;
+
+      overlay.appendChild(ch);
+
+      // Counter dot
+      const dot = document.createElement('div');
+      dot.className = 'jm-counter-dot';
+      dot.setAttribute('role', 'button');
+      dot.setAttribute('aria-label', `Chapter ${idx + 1}: ${company}`);
+      dot.addEventListener('click', () => scrollToChapter(idx));
+      counter.appendChild(dot);
+
+      chapters.push({ el: ch, idx, phase, milestone });
+    });
+
+    // ── Set up scroll observer on overlay ──
+    setupScrollObserver();
+
+    // ── Exit button ──
+    exitBtn.addEventListener('click', exitJourneyMode);
+
+    // ── Keyboard ──
+    document.addEventListener('keydown', (e) => {
+      if (!isActive) return;
+      if (e.key === 'Escape') exitJourneyMode();
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') scrollToChapter(currentChapter + 1);
+      if (e.key === 'ArrowUp'   || e.key === 'ArrowLeft')  scrollToChapter(currentChapter - 1);
+    });
+  }
+
+  /** Intersection observer inside the overlay for chapter tracking */
+  function setupScrollObserver() {
+    scrollObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const idx = parseInt(entry.target.dataset.idx, 10);
+        activateChapter(idx);
+      });
+    }, {
+      root: overlay,
+      threshold: 0.55
+    });
+    chapters.forEach(c => scrollObserver.observe(c.el));
+  }
+
+  /** Activate (reveal) content for a chapter */
+  function activateChapter(idx) {
+    if (idx === currentChapter) return;
+    currentChapter = idx;
+
+    // Reset layers in all chapters
+    chapters.forEach(c => {
+      c.el.querySelectorAll('.jm-layer').forEach(l => l.classList.remove('jm-visible'));
+    });
+
+    // Reveal layers in current chapter sequentially (CSS handles the delays)
+    const ch = chapters[idx].el;
+    requestAnimationFrame(() => {
+      ch.querySelectorAll('.jm-layer').forEach(l => l.classList.add('jm-visible'));
+    });
+
+    // Update progress bar
+    const progress = chapters.length > 1 ? (idx / (chapters.length - 1)) * 100 : 100;
+    progressBar.style.width = `${progress}%`;
+
+    // Update counter dots
+    document.querySelectorAll('.jm-counter-dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === idx);
+    });
+  }
+
+  /** Scroll the overlay to a specific chapter */
+  function scrollToChapter(idx) {
+    if (idx < 0 || idx >= chapters.length) return;
+    chapters[idx].el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /** Enter Journey Mode */
+  function enterJourneyMode() {
+    buildOverlay(); // no-op if already built
+
+    // Show controls
+    overlay.classList.add('jm-active');
+    exitBtn.classList.add('jm-active');
+    counter.classList.add('jm-active');
+    isActive = true;
+
+    // Lock body scroll
+    document.body.style.overflow = 'hidden';
+
+    // Scroll to first chapter
+    if (chapters.length) {
+      overlay.scrollTop = 0;
+      setTimeout(() => activateChapter(0), 100);
+    }
+
+    // Brief scroll hint animation
+    scrollHint.style.display = 'flex';
+    scrollHint.style.animation = '';
+    void scrollHint.offsetWidth; // reflow
+    scrollHint.style.animation = 'jm-hint-fade 3s ease 0.5s forwards';
+
+    // Announce to screen readers
+    overlay.focus && overlay.focus();
+  }
+
+  /** Exit Journey Mode */
+  function exitJourneyMode() {
+    overlay.classList.remove('jm-active');
+    exitBtn.classList.remove('jm-active');
+    counter.classList.remove('jm-active');
+    isActive = false;
+
+    // Restore body scroll
+    document.body.style.overflow = '';
+
+    // Reset state
+    currentChapter = -1;
+    chapters.forEach(c => {
+      c.el.querySelectorAll('.jm-layer').forEach(l => l.classList.remove('jm-visible'));
+    });
+    progressBar.style.width = '0%';
+    document.querySelectorAll('.jm-counter-dot').forEach(d => d.classList.remove('active'));
+
+    // Scroll back to journey section in the main page
+    const section = document.getElementById('journey');
+    if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /** Wire up the toggle button */
+  function init() {
+    const btn = document.getElementById('journey-mode-btn');
+    if (btn) btn.addEventListener('click', enterJourneyMode);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
