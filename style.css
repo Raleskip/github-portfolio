@@ -863,9 +863,324 @@ footer {
 .reveal-delay-4 { transition-delay: 0.4s; }
 
 /* ============================
+   JOURNEY & EDUCATION SECTION
+   ============================ */
+
+.phase-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+  padding: 0.6rem 1.25rem 0.6rem 0.9rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  width: fit-content;
+}
+.phase-dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.phase-1 .phase-dot { background: var(--accent-teal); box-shadow: 0 0 6px var(--accent-teal); }
+.phase-2 .phase-dot { background: var(--accent-blue);  box-shadow: 0 0 6px var(--accent-blue); }
+.phase-3 .phase-dot { background: var(--accent-purple); box-shadow: 0 0 6px var(--accent-purple); }
+
+.phase-name {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.phase-years {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  padding-left: 0.75rem;
+  border-left: 1px solid var(--border);
+}
+
+.journey-phase {
+  margin-bottom: 3rem;
+}
+
+/* Vertical track */
+.timeline-track {
+  position: relative;
+  padding-left: 3rem;
+}
+.timeline-track::before {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 10px;
+  width: 1px;
+  background: linear-gradient(to bottom,
+    rgba(45,212,191,0.4) 0%,
+    rgba(79,158,255,0.3) 40%,
+    rgba(168,85,247,0.25) 75%,
+    transparent 100%);
+}
+
+/* Timeline item */
+.timeline-item {
+  position: relative;
+  padding-bottom: 2rem;
+}
+.timeline-item:last-child { padding-bottom: 0; }
+
+/* Dot on track */
+.timeline-dot {
+  position: absolute;
+  left: -2.55rem;
+  top: 1.9rem;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--bg-secondary, #0d1117);
+  border: 2px solid var(--accent-blue);
+  z-index: 2;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+.phase-1 .timeline-dot { border-color: var(--accent-teal); }
+.phase-2 .timeline-dot { border-color: var(--accent-blue); }
+.phase-3 .timeline-dot { border-color: var(--accent-purple); }
+
+.timeline-item:hover .phase-1 .timeline-dot,
+.phase-1 .timeline-item:hover .timeline-dot {
+  background: var(--accent-teal);
+  box-shadow: 0 0 10px var(--accent-teal);
+}
+.timeline-item:hover .phase-2 .timeline-dot,
+.phase-2 .timeline-item:hover .timeline-dot {
+  background: var(--accent-blue);
+  box-shadow: 0 0 10px var(--accent-blue);
+}
+.timeline-item:hover .phase-3 .timeline-dot,
+.phase-3 .timeline-item:hover .timeline-dot {
+  background: var(--accent-purple);
+  box-shadow: 0 0 10px var(--accent-purple);
+}
+
+/* Role card */
+.timeline-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 1.75rem 2rem;
+  transition: var(--transition);
+}
+.timeline-card:hover {
+  border-color: var(--border-accent);
+  transform: translateX(5px);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Role header */
+.role-company {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  font-weight: 800;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.2rem;
+}
+.role-title-text {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.6rem;
+}
+.role-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.9rem;
+  margin-bottom: 1.1rem;
+}
+.role-meta-item {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.role-meta-divider {
+  width: 1px; height: 11px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+/* Journey context — italic narrative */
+.journey-context {
+  font-size: 0.84rem;
+  color: var(--accent-blue);
+  font-style: italic;
+  line-height: 1.65;
+  margin-bottom: 1.1rem;
+  padding: 0.6rem 0.9rem;
+  border-left: 2px solid rgba(79,158,255,0.3);
+  background: rgba(79,158,255,0.04);
+  border-radius: 0 8px 8px 0;
+}
+.phase-1 .journey-context {
+  color: var(--accent-teal);
+  border-left-color: rgba(45,212,191,0.35);
+  background: rgba(45,212,191,0.04);
+}
+.phase-3 .journey-context {
+  color: var(--accent-purple);
+  border-left-color: rgba(168,85,247,0.35);
+  background: rgba(168,85,247,0.04);
+}
+
+/* Impact summary */
+.impact-summary {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 1.2rem;
+}
+
+/* Achievements */
+.achievements-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-bottom: 1.25rem;
+}
+.achievement-bullet {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  transition: color 0.2s ease;
+}
+.achievement-bullet:hover { color: var(--text-primary); }
+.achievement-bullet::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--accent-blue);
+  flex-shrink: 0;
+  margin-top: 8px;
+}
+.phase-1 .achievement-bullet::before { background: var(--accent-teal); }
+.phase-3 .achievement-bullet::before { background: var(--accent-purple); }
+
+/* Journey tags */
+.journey-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+.journey-tag {
+  font-size: 0.69rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 100px;
+  background: rgba(79,158,255,0.05);
+  border: 1px solid rgba(79,158,255,0.15);
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+  transition: var(--transition);
+  cursor: default;
+}
+.journey-tag:hover {
+  background: rgba(79,158,255,0.12);
+  border-color: rgba(79,158,255,0.3);
+  color: var(--accent-blue);
+}
+
+/* ============================
+   EDUCATION SUB-SECTION
+   ============================ */
+.edu-section {
+  margin-top: 5rem;
+  padding-top: 4rem;
+  border-top: 1px solid var(--border);
+}
+.edu-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+.edu-label {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.edu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+.edu-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.4rem 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: var(--transition);
+}
+.edu-card:hover {
+  border-color: rgba(168,85,247,0.3);
+  transform: translateY(-2px);
+  background: rgba(168,85,247,0.03);
+}
+.edu-icon {
+  width: 40px; height: 40px;
+  min-width: 40px;
+  border-radius: 11px;
+  background: rgba(168,85,247,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+}
+.edu-institution {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+}
+.edu-degree {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-bottom: 0.15rem;
+}
+.edu-meta {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* ============================
    PROJECTS SECTION
    ============================ */
 #projects { background: var(--bg-secondary); }
+
 
 .projects-grid {
   display: grid;
@@ -1182,6 +1497,14 @@ footer {
   .achievements-grid { grid-template-columns: 1fr; }
   .expertise-grid { grid-template-columns: 1fr; }
   .projects-grid { grid-template-columns: 1fr; }
+
+  .timeline-track { padding-left: 1.75rem; }
+  .timeline-track::before { left: 6px; }
+  .timeline-dot { left: -1.45rem; width: 10px; height: 10px; top: 2rem; }
+  .timeline-card { padding: 1.25rem 1.25rem; }
+  .edu-grid { grid-template-columns: 1fr; }
+  .phase-header { flex-wrap: wrap; }
+  .phase-years { border-left: none; padding-left: 0; padding-top: 0.2rem; width: 100%; }
 
   .contact-card { padding: 2.5rem 1.5rem; }
 }
