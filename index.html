@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aayush Pawar — Senior Product Marketing & Growth Leader</title>
+  <meta name="description" content="Senior Product Marketing & Growth Leader with 10+ years building digital ecosystems across telecom, fintech, health-tech, and ed-tech. Products serving 500M+ users." />
+  <meta property="og:title" content="Aayush Pawar — Growth Leader & Product Marketer" />
+  <meta property="og:description" content="Architecting AI-enabled personalization, lifecycle engagement, and monetization systems that drive adoption, retention, and ARPU at scale." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* Mobile nav overlay */
+    #mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      background: rgba(5, 7, 15, 0.97);
+      backdrop-filter: blur(20px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+    }
+    #mobile-menu.open { display: flex; }
+    #mobile-menu a {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    #mobile-menu a:hover { color: var(--accent-blue); }
+    #mobile-menu .close-btn {
+      position: absolute;
+      top: 1.5rem; right: 2rem;
+      font-size: 2rem;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+    nav .nav-links a.active { color: var(--accent-blue); }
+  </style>
+</head>
+<body>
+
+  <!-- MOBILE NAV OVERLAY -->
+  <div id="mobile-menu" role="dialog" aria-label="Mobile navigation">
+    <button class="close-btn" id="close-mobile" aria-label="Close menu">&times;</button>
+    <a href="#about">About</a>
+    <a href="#impact">Impact</a>
+    <a href="#expertise">Expertise</a>
+    <a href="#philosophy">Philosophy</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <!-- NAVIGATION -->
+  <nav id="main-nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo" aria-label="Home">AP</a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#impact">Impact</a></li>
+        <li><a href="#expertise">Expertise</a></li>
+        <li><a href="#philosophy">Philosophy</a></li>
+        <li><a href="#contact" class="nav-cta">Let's Connect</a></li>
+      </ul>
+      <div class="hamburger" id="hamburger" role="button" aria-label="Open menu" tabindex="0">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===========================
+       HERO SECTION
+       =========================== -->
+  <section id="hero" aria-label="Hero">
+    <div class="container">
+      <div class="hero-grid">
+
+        <!-- LEFT: Content -->
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="dot" aria-hidden="true"></span>
+            Open to Strategic Opportunities
+          </div>
+
+          <h1 class="hero-name gradient-text">Aayush Pawar</h1>
+
+          <p class="hero-title">Senior Product Marketing &amp; Growth Leader</p>
+
+          <p class="hero-tagline">
+            10+ years building and scaling digital ecosystems across telecom, fintech,
+            health-tech, and ed-tech — turning fragmented experiences into
+            <strong>behavior-driven growth loops</strong> that serve 500M+ users.
+          </p>
+
+          <div class="hero-stats" role="list" aria-label="Key statistics">
+            <div class="stat-item" role="listitem">
+              <span class="stat-value gradient-text" data-target="10+">0+</span>
+              <span class="stat-label">Years Experience</span>
+            </div>
+            <div class="stat-item" role="listitem">
+              <span class="stat-value gradient-text" data-target="500M+">0M+</span>
+              <span class="stat-label">Users Impacted</span>
+            </div>
+            <div class="stat-item" role="listitem">
+              <span class="stat-value gradient-text" data-target="25+">0+</span>
+              <span class="stat-label">Apps Scaled</span>
+            </div>
+            <div class="stat-item" role="listitem">
+              <span class="stat-value gradient-text" data-target="12+">0+</span>
+              <span class="stat-label">Cr Revenue (₹)</span>
+            </div>
+          </div>
+
+          <div class="hero-actions">
+            <a href="#contact" class="btn-primary" id="cta-connect">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.07 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3 1.17h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"/></svg>
+              Let's Connect
+            </a>
+            <a href="#impact" class="btn-outline" id="cta-impact">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              View Impact
+            </a>
+          </div>
+        </div>
+
+        <!-- RIGHT: Visual -->
+        <div class="hero-visual" aria-hidden="true">
+          <div class="hero-avatar-wrap">
+            <div class="hero-avatar-ring"></div>
+            <div class="hero-avatar-ring2"></div>
+            <img
+              src="hero_avatar_1774019190501.png"
+              alt="Professional avatar"
+              class="hero-avatar-img"
+              width="420" height="420"
+            />
+          </div>
+          <div class="hero-floating-cards">
+            <div class="float-card">
+              <span class="fc-icon">🤖</span>AI-Enabled Personalization
+            </div>
+            <div class="float-card">
+              <span class="fc-icon">📈</span>₹12 Cr+ Revenue Generated
+            </div>
+            <div class="float-card">
+              <span class="fc-icon">🌐</span>Jio Platforms · 25+ Apps
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       ABOUT SECTION
+       =========================== -->
+  <section id="about" aria-label="About">
+    <div class="container">
+      <div class="about-grid">
+
+        <!-- Left: Text -->
+        <div class="about-content">
+          <div class="section-label">About Me</div>
+          <h2 class="section-title" style="text-align:left; margin-bottom:1.5rem">
+            Where Product, Design &amp;<br>
+            <span class="gradient-text">Marketing Converge</span>
+          </h2>
+          <p>
+            I operate at the intersection of product, design, and marketing — architecting
+            AI-enabled personalization, lifecycle engagement systems, and monetization
+            journeys that directly influence adoption, retention, and ARPU.
+          </p>
+          <p>
+            From my time leading UX and growth systems across 25+ apps at <strong>Jio Platforms</strong>,
+            to generating <strong>₹12 Cr+</strong> in revenue through GTM and content engines,
+            I've built a reputation for turning fragmented user experiences into cohesive,
+            behavior-driven growth systems.
+          </p>
+          <p>
+            My philosophy is simple: align narrative, experience, and distribution into a
+            unified system where growth is not a campaign outcome — but an engineered inevitability.
+          </p>
+
+          <div class="about-highlights">
+            <div class="highlight-item reveal">
+              <div class="highlight-icon" aria-hidden="true">🚀</div>
+              <div class="highlight-text">
+                <strong>Jio Platforms</strong>
+                <span>Led UX &amp; growth systems across 25+ apps serving hundreds of millions</span>
+              </div>
+            </div>
+            <div class="highlight-item reveal reveal-delay-1">
+              <div class="highlight-icon" aria-hidden="true">💡</div>
+              <div class="highlight-text">
+                <strong>GTM &amp; Content Engine</strong>
+                <span>Architected revenue-generating go-to-market and content systems</span>
+              </div>
+            </div>
+            <div class="highlight-item reveal reveal-delay-2">
+              <div class="highlight-icon" aria-hidden="true">⚡</div>
+              <div class="highlight-text">
+                <strong>AI-Enabled Personalization</strong>
+                <span>Built intelligent lifecycle engagement across multiple verticals</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Domains -->
+        <div class="about-domains">
+          <div class="section-label" style="justify-content: flex-start; margin-bottom:1.25rem">
+            Verticals
+          </div>
+          <div class="domains-grid">
+            <div class="domain-tag reveal">
+              <span class="d-icon">📡</span>
+              <div class="d-name">Telecom</div>
+              <div class="d-desc">Large-scale connectivity products</div>
+            </div>
+            <div class="domain-tag reveal reveal-delay-1">
+              <span class="d-icon">💳</span>
+              <div class="d-name">Fintech</div>
+              <div class="d-desc">Payments & financial services</div>
+            </div>
+            <div class="domain-tag reveal reveal-delay-2">
+              <span class="d-icon">🏥</span>
+              <div class="d-name">Health-Tech</div>
+              <div class="d-desc">Digital health &amp; wellness</div>
+            </div>
+            <div class="domain-tag reveal reveal-delay-3">
+              <span class="d-icon">🎓</span>
+              <div class="d-name">Ed-Tech</div>
+              <div class="d-desc">Learning &amp; skill platforms</div>
+            </div>
+          </div>
+
+          <!-- Skills list -->
+          <div style="margin-top: 2rem;">
+            <div class="section-label" style="justify-content: flex-start; margin-bottom:1rem">Core Tools & Methods</div>
+            <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+              <span class="skill-tag">Product-Led Growth</span>
+              <span class="skill-tag">OKR Frameworks</span>
+              <span class="skill-tag">A/B Testing</span>
+              <span class="skill-tag">Lifecycle Marketing</span>
+              <span class="skill-tag">AI Personalization</span>
+              <span class="skill-tag">GTM Strategy</span>
+              <span class="skill-tag">UX Design</span>
+              <span class="skill-tag">Retention Engineering</span>
+              <span class="skill-tag">ARPU Optimization</span>
+              <span class="skill-tag">Data Analytics</span>
+              <span class="skill-tag">Content Strategy</span>
+              <span class="skill-tag">Monetization</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       IMPACT SECTION
+       =========================== -->
+  <section id="impact" aria-label="Impact">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label">Track Record</div>
+        <h2 class="section-title">Impact &amp; <span class="gradient-text">Achievements</span></h2>
+        <p class="section-subtitle">Numbers that tell the story of growth engineered at scale across industries and platforms.</p>
+      </div>
+
+      <div class="impact-stats-row">
+        <div class="impact-stat-card reveal">
+          <div class="stat-num" data-target="10+">0+</div>
+          <div class="stat-desc">Years of Strategic Leadership</div>
+        </div>
+        <div class="impact-stat-card reveal reveal-delay-1">
+          <div class="stat-num" data-target="500M+">0M+</div>
+          <div class="stat-desc">Users Across Platforms</div>
+        </div>
+        <div class="impact-stat-card reveal reveal-delay-2">
+          <div class="stat-num" data-target="25+">0+</div>
+          <div class="stat-desc">Apps Scaled at Jio Platforms</div>
+        </div>
+        <div class="impact-stat-card reveal reveal-delay-3">
+          <div class="stat-num" data-target="12+">0+</div>
+          <div class="stat-desc">Crore ₹ Revenue Generated</div>
+        </div>
+      </div>
+
+      <div class="achievements-grid">
+        <div class="achievement-card reveal">
+          <div class="ach-icon" aria-hidden="true">🤖</div>
+          <h4>AI-Enabled Personalization</h4>
+          <p>Architected intelligent personalization systems that dynamically adjust user journeys across products — improving engagement, retention, and conversion at scale.</p>
+        </div>
+        <div class="achievement-card reveal reveal-delay-1">
+          <div class="ach-icon" aria-hidden="true">🔄</div>
+          <h4>Lifecycle Engagement Systems</h4>
+          <p>Designed end-to-end lifecycle engagement frameworks that transformed user onboarding, activation, and reactivation into measurable growth levers.</p>
+        </div>
+        <div class="achievement-card reveal reveal-delay-2">
+          <div class="ach-icon" aria-hidden="true">💰</div>
+          <h4>Revenue through GTM Engines</h4>
+          <p>Generated ₹12 Cr+ by building and deploying go-to-market strategies and content engines that create durable, compounding revenue pipelines.</p>
+        </div>
+        <div class="achievement-card reveal reveal-delay-1">
+          <div class="ach-icon" aria-hidden="true">📱</div>
+          <h4>UX & Growth at Jio Platforms</h4>
+          <p>Led UX strategy and growth systems across 25+ apps — unifying fragmented experiences into cohesive, user-centric product ecosystems at a massive scale.</p>
+        </div>
+        <div class="achievement-card reveal reveal-delay-2">
+          <div class="ach-icon" aria-hidden="true">📊</div>
+          <h4>Monetization Architecture</h4>
+          <p>Built monetization journeys that convert adoption into lasting ARPU growth — bridging the gap between user experience and business model outcomes.</p>
+        </div>
+        <div class="achievement-card reveal reveal-delay-3">
+          <div class="ach-icon" aria-hidden="true">🌐</div>
+          <h4>Multi-Vertical Ecosystem Leadership</h4>
+          <p>Driven impact across telecom, fintech, health-tech, and ed-tech — bringing cross-domain pattern recognition that accelerates growth in any vertical.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       EXPERTISE SECTION
+       =========================== -->
+  <section id="expertise" aria-label="Expertise">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label">What I Do</div>
+        <h2 class="section-title">Core <span class="gradient-text">Expertise</span></h2>
+        <p class="section-subtitle">A practitioner-led skillset that spans the full growth stack — from strategy to execution to measurement.</p>
+      </div>
+
+      <div class="expertise-grid">
+
+        <div class="skill-card reveal">
+          <div class="skill-icon" aria-hidden="true">🎯</div>
+          <h3>Product Marketing Strategy</h3>
+          <p>Crafting positioning, messaging, and GTM frameworks that resonate with users and drive measurable product adoption across diverse market segments.</p>
+          <div class="skill-tags">
+            <span class="skill-tag">GTM</span>
+            <span class="skill-tag">Positioning</span>
+            <span class="skill-tag">Messaging</span>
+            <span class="skill-tag">Launch Strategy</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal reveal-delay-1">
+          <div class="skill-icon" aria-hidden="true">📈</div>
+          <h3>Growth & Retention Engineering</h3>
+          <p>Building behavior-driven growth loops — from acquisition through activation, retention, and referral — designed to compound over time.</p>
+          <div class="skill-tags">
+            <span class="skill-tag">PLG</span>
+            <span class="skill-tag">Funnel Design</span>
+            <span class="skill-tag">Churn Reduction</span>
+            <span class="skill-tag">LTV</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal reveal-delay-2">
+          <div class="skill-icon" aria-hidden="true">🤖</div>
+          <h3>AI-Enabled Personalization</h3>
+          <p>Designing intelligent, data-driven systems that adapt user experiences in real time — driving relevance, engagement, and conversion at scale.</p>
+          <div class="skill-tags">
+            <span class="skill-tag">ML Personalization</span>
+            <span class="skill-tag">Segmentation</span>
+            <span class="skill-tag">Recommendations</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <div class="skill-icon" aria-hidden="true">🎨</div>
+          <h3>UX & Product Design Leadership</h3>
+          <p>Leading UX strategy and design systems that transform complex product ecosystems into intuitive, cohesive, and delightful user experiences.</p>
+          <div class="skill-tags">
+            <span class="skill-tag">UX Strategy</span>
+            <span class="skill-tag">Design Systems</span>
+            <span class="skill-tag">User Research</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal reveal-delay-1">
+          <div class="skill-icon" aria-hidden="true">💳</div>
+          <h3>Monetization & ARPU Growth</h3>
+          <p>Architecting revenue models and monetization journeys that maximize ARPU while preserving the user experience — turning value delivery into durable revenue.</p>
+          <div class="skill-tags">
+            <span class="skill-tag">Monetization</span>
+            <span class="skill-tag">Pricing Strategy</span>
+            <span class="skill-tag">ARPU</span>
+            <span class="skill-tag">Upsell Flows</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal reveal-delay-2">
+          <div class="skill-icon" aria-hidden="true">🔗</div>
+          <h3>Digital Ecosystem Architecture</h3>
+          <p>Building and scaling interconnected digital product ecosystems — aligning narrative, experience, and distribution into system-level growth engines.</p>
+          <div class="skill-tags">
+            <span class="skill-tag">Ecosystem Design</span>
+            <span class="skill-tag">Platform Strategy</span>
+            <span class="skill-tag">Cross-app Growth</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       PHILOSOPHY SECTION
+       =========================== -->
+  <section id="philosophy" aria-label="Philosophy">
+    <div class="philosophy-bg" aria-hidden="true"></div>
+    <div class="container">
+      <div class="section-label reveal" style="justify-content:center; margin-bottom:3rem">
+        My Approach
+      </div>
+      <div class="philosophy-quote reveal">
+        <span class="quote-mark" aria-hidden="true">"</span>
+        <p class="quote-text">
+          Align narrative, experience, and distribution into a unified system
+          where growth is not a campaign outcome — but an
+          <span class="gradient-text">engineered inevitability.</span>
+        </p>
+        <div class="quote-divider" aria-hidden="true"></div>
+        <div class="philosophy-pillars">
+          <div class="pillar">🧠 Narrative Alignment</div>
+          <div class="pillar">✨ Experience Design</div>
+          <div class="pillar">📡 Distribution Strategy</div>
+          <div class="pillar">⚙️ Behavior-Driven Loops</div>
+          <div class="pillar">📊 Measurable Outcomes</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       CONTACT SECTION
+       =========================== -->
+  <section id="contact" aria-label="Contact">
+    <div class="container">
+      <div class="contact-card reveal">
+        <h2>Let's Build Something <span class="gradient-text">Inevitable</span></h2>
+        <p>
+          Whether you're looking to scale a product, architect a growth system, or
+          rethink your GTM strategy — I'd love to connect and explore what's possible.
+        </p>
+        <div class="contact-links">
+          <a href="mailto:aayush@example.com" class="contact-link primary" id="cta-email">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+            Send an Email
+          </a>
+          <a href="https://linkedin.com/in/aayushpawar" target="_blank" rel="noopener noreferrer" class="contact-link secondary" id="cta-linkedin">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn Profile
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       FOOTER
+       =========================== -->
+  <footer role="contentinfo">
+    <div class="container">
+      <p>
+        &copy; 2026 Aayush Pawar &nbsp;·&nbsp;
+        Senior Product Marketing &amp; Growth Leader &nbsp;·&nbsp;
+        <span class="gradient-text">Growth is an engineered inevitability.</span>
+      </p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Mobile close button
+    document.getElementById('close-mobile')?.addEventListener('click', () => {
+      document.getElementById('mobile-menu')?.classList.remove('open');
+    });
+  </script>
+</body>
+</html>
