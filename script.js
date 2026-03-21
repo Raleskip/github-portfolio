@@ -682,3 +682,304 @@ if (document.readyState === 'loading') {
   }
 
 })();
+
+// =====================================
+// DIGITAL GRAVITY — INTERACTION SYSTEM
+// =====================================
+(function() {
+  'use strict';
+
+  const isDesktop = window.matchMedia('(pointer: fine)').matches;
+
+  /* ─────────────────────────────────────
+     1. THEME SWITCHER
+  ───────────────────────────────────── */
+  const THEMES = ['dark', 'light', 'neon'];
+  const html = document.documentElement;
+
+  function applyTheme(theme) {
+    if (theme === 'dark') html.removeAttribute('data-theme');
+    else html.setAttribute('data-theme', theme);
+    localStorage.setItem('portfolio-theme', theme);
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.themeTarget === theme);
+    });
+  }
+
+  // Init from localStorage
+  const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
+  applyTheme(savedTheme);
+
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.addEventListener('click', () => applyTheme(btn.dataset.themeTarget));
+  });
+
+  /* ─────────────────────────────────────
+     2. CUSTOM CURSOR (lerp smoothing)
+  ───────────────────────────────────── */
+  if (isDesktop) {
+    const ring = document.getElementById('cursor-ring');
+    const dot  = document.getElementById('cursor-dot');
+    let mx = 0, my = 0;       // mouse exact
+    let rx = 0, ry = 0;       // ring lerped
+    const LERP = 0.14;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX;
+      my = e.clientY;
+      // dot snaps instantly
+      if (dot) {
+        dot.style.left = mx + 'px';
+        dot.style.top  = my + 'px';
+      }
+      updateCursorContext(e.target);
+    });
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function animateCursor() {
+      rx = lerp(rx, mx, LERP);
+      ry = lerp(ry, my, LERP);
+      if (ring) {
+        ring.style.left = rx + 'px';
+        ring.style.top  = ry + 'px';
+      }
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Context-aware cursor state
+    const CTX_MAP = {
+      'A'        : 'ctx-explore',
+      'BUTTON'   : 'ctx-view',
+      '.project-card'    : 'ctx-view',
+      '.timeline-card'   : 'ctx-explore',
+      '.jm-cta-btn'      : 'ctx-expand',
+      '[data-cursor="explore"]' : 'ctx-explore',
+      '[data-cursor="view"]'    : 'ctx-view',
+      '[data-cursor="drag"]'    : 'ctx-drag',
+      '[data-cursor="expand"]'  : 'ctx-expand',
+    };
+    const CTX_CLASSES = ['ctx-explore','ctx-view','ctx-drag','ctx-expand'];
+
+    function updateCursorContext(target) {
+      if (!ring || !target) return;
+      let ctx = '';
+      if (target.closest('.jm-cta-btn') || target.closest('#journey-mode-btn')) ctx = 'ctx-expand';
+      else if (target.closest('.project-card')) ctx = 'ctx-view';
+      else if (target.closest('.timeline-card')) ctx = 'ctx-explore';
+      else if (target.closest('[data-cursor]')) ctx = 'ctx-' + target.closest('[data-cursor]').dataset.cursor;
+      else if (target.tagName === 'A' || target.tagName === 'BUTTON') ctx = 'ctx-view';
+
+      CTX_CLASSES.forEach(c => ring.classList.toggle(c, c === ctx));
+    }
+
+    // Hide cursor when leaving window
+    document.addEventListener('mouseleave', () => { if (ring) ring.style.opacity = '0'; });
+    document.addEventListener('mouseenter', () => { if (ring) ring.style.opacity = '1'; });
+
+    // Click burst on dot
+    document.addEventListener('mousedown', () => {
+      if (ring) ring.style.transform = 'translate(-50%,-50%) scale(0.75)';
+    });
+    document.addEventListener('mouseup', () => {
+      if (ring) ring.style.transform = 'translate(-50%,-50%) scale(1)';
+    });
+  }
+
+  /* ─────────────────────────────────────
+     3. MAGNETIC HOVER PHYSICS
+  ───────────────────────────────────── */
+  function initMagnetic() {
+    const magnetics = document.querySelectorAll('.magnetic');
+    magnetics.forEach(el => {
+      let animId;
+      let cx = 0, cy = 0;
+
+      el.addEventListener('mousemove', e => {
+        const rect = el.getBoundingClientRect();
+        const dx = e.clientX - (rect.left + rect.width / 2);
+        const dy = e.clientY - (rect.top  + rect.height / 2);
+        const strength = el.classList.contains('nav-cta') ? 0.45 : 0.3;
+        const tx = Math.max(-14, Math.min(14, dx * strength));
+        const ty = Math.max(-14, Math.min(14, dy * strength));
+
+        cancelAnimationFrame(animId);
+        cx = tx; cy = ty;
+        el.style.transform = `translate(${tx}px, ${ty}px)`;
+        el.style.transition = 'transform 0.12s linear';
+      });
+
+      el.addEventListener('mouseleave', () => {
+        el.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        el.style.transform = 'translate(0, 0)';
+      });
+    });
+  }
+  initMagnetic();
+
+  /* ─────────────────────────────────────
+     4. 3D CARD TILT
+  ───────────────────────────────────── */
+  function initCardTilt() {
+    const cards = document.querySelectorAll('.tilt-card');
+    cards.forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const cx = (e.clientX - rect.left) / rect.width  - 0.5;
+        const cy = (e.clientY - rect.top)  / rect.height - 0.5;
+        const rotX = cy * -6;
+        const rotY = cx *  6;
+        card.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.02)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(900px) rotateX(0) rotateY(0) scale(1)';
+        card.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1)';
+        setTimeout(() => { card.style.transition = ''; }, 400);
+      });
+    });
+  }
+  initCardTilt();
+
+  // Re-apply tilt to dynamically added project cards
+  const projectGrid = document.getElementById('projects-grid');
+  if (projectGrid) {
+    new MutationObserver(() => {
+      projectGrid.querySelectorAll('.project-card:not(.tilt-card)').forEach(c => {
+        c.classList.add('tilt-card');
+      });
+      initCardTilt();
+    }).observe(projectGrid, { childList: true });
+  }
+
+  /* ─────────────────────────────────────
+     5. HERO TEXT SPLIT ANIMATION
+  ───────────────────────────────────── */
+  function splitAndAnimate(el, baseDelay = 0) {
+    if (!el || el.dataset.split) return;
+    el.dataset.split = 'true';
+    const text = el.textContent;
+    el.classList.add('char-split');
+    el.innerHTML = text.split('').map((char, i) =>
+      char === ' '
+        ? '<span class="char" style="display:inline-block;min-width:0.3em">&nbsp;</span>'
+        : `<span class="char" style="animation-delay:${baseDelay + i * 0.03}s">${char}</span>`
+    ).join('');
+  }
+
+  // Animate hero name on load
+  const heroName = document.querySelector('.hero-name');
+  if (heroName) splitAndAnimate(heroName, 0.2);
+
+  /* ─────────────────────────────────────
+     6. SECTION ENTRY ANIMATION
+  ───────────────────────────────────── */
+  const sections = document.querySelectorAll('section[id]');
+  const sectionObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('section-visible');
+        entry.target.classList.remove('section-hidden');
+      }
+    });
+  }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
+
+  sections.forEach(s => {
+    s.classList.add('section-hidden');
+    sectionObserver.observe(s);
+  });
+  // hero is immediately visible
+  const heroSection = document.getElementById('hero');
+  if (heroSection) {
+    heroSection.classList.remove('section-hidden');
+    heroSection.classList.add('section-visible');
+  }
+
+  /* ─────────────────────────────────────
+     7. SCROLL VELOCITY + PROGRESS
+  ───────────────────────────────────── */
+  const velBar = document.getElementById('scroll-velocity-bar');
+  let lastScrollY = window.scrollY;
+  let velTimeout;
+
+  window.addEventListener('scroll', () => {
+    const delta = Math.abs(window.scrollY - lastScrollY);
+    lastScrollY = window.scrollY;
+    const pct = Math.min(100, (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+
+    if (velBar) {
+      velBar.style.width = pct + '%';
+      velBar.style.opacity = '1';
+      clearTimeout(velTimeout);
+      velTimeout = setTimeout(() => { velBar.style.opacity = '0'; }, 1200);
+    }
+  }, { passive: true });
+
+  /* ─────────────────────────────────────
+     8. HERO PARALLAX
+  ───────────────────────────────────── */
+  const heroAvatar = document.querySelector('.hero-avatar-wrap');
+  const heroContent = document.querySelector('.hero-content');
+
+  window.addEventListener('scroll', () => {
+    const sy = window.scrollY;
+    if (sy > window.innerHeight) return;
+    if (heroAvatar) heroAvatar.style.transform = `translateY(${sy * 0.12}px)`;
+    if (heroContent) heroContent.style.transform = `translateY(${sy * 0.05}px)`;
+  }, { passive: true });
+
+  /* ─────────────────────────────────────
+     9. AMBIENT PARTICLE DOTS (canvas)
+  ───────────────────────────────────── */
+  function initParticles() {
+    const canvas = document.createElement('canvas');
+    canvas.id = 'particle-canvas';
+    canvas.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.35;';
+    document.body.prepend(canvas);
+
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [];
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Create sparse floating dots
+    for (let i = 0; i < 55; i++) {
+      particles.push({
+        x: Math.random() * 1920,
+        y: Math.random() * 1080,
+        r: Math.random() * 1.2 + 0.3,
+        dx: (Math.random() - 0.5) * 0.18,
+        dy: (Math.random() - 0.5) * 0.12,
+        alpha: Math.random() * 0.5 + 0.15
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      const theme = html.getAttribute('data-theme') || 'dark';
+      const dotColor = theme === 'neon' ? '0,245,212' : theme === 'light' ? '37,99,235' : '79,158,255';
+
+      particles.forEach(p => {
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.x < 0) p.x = W;
+        if (p.x > W) p.x = 0;
+        if (p.y < 0) p.y = H;
+        if (p.y > H) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${dotColor},${p.alpha})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+  }
+  initParticles();
+
+})();
